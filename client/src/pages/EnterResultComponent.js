@@ -1,7 +1,7 @@
 // EnterResultComponent.js
 import React, { useState } from 'react';
 
-function EnterResultComponent({ setPhase, setCallResult, sendbluePhoneNumber, justCallPhoneNumber }) {
+function EnterResultComponent({ setPhase, setCallResult, callToPhoneNumber, justCallPhoneNumber }) {
     const [result, setResult] = useState('');
 
     const handleSubmit = () => {
@@ -10,10 +10,15 @@ function EnterResultComponent({ setPhase, setCallResult, sendbluePhoneNumber, ju
             fetch('/call/result', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phoneNumber: sendbluePhoneNumber, callResult: result })
+                body: JSON.stringify({
+                    callToPhoneNumber,
+                    callResult: result
+                })
             })
-            .then(() => {
-                setPhase('messageSuggest');
+            .then(response => response.json()) // Always parse JSON for consistency
+            .then(data => {
+                console.log('Success:', data); // Log the success message to the console instead
+                setPhase('messageSuggest'); // Move to the next phase without an alert
             })
             .catch(error => {
                 console.error('Failed to send call result:', error);
