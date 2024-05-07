@@ -85,18 +85,26 @@ app.post('/call/initiate', (req, res) => {
   }
 });
 
-// Mixpanel - Update call result
+// server.js
+// server.js
+// server.js
+// server.js
+// server.js endpoint for /call/result
 app.post('/call/result', (req, res) => {
   const { callToPhoneNumber, callResult } = req.body;
 
   try {
       mixpanelService.updateCallResult(callToPhoneNumber, callResult);
-      res.status(200).send('Call result updated successfully.');
+      res.status(200).json({ message: 'Call result updated successfully.' });
   } catch (error) {
       console.error("Failed to update call result:", error);
-      res.status(500).send("Error updating call result.");
+      res.status(500).json({ message: "Error updating call result.", error: error.toString() });
   }
 });
+
+
+
+
 
 if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, '../client/build')));

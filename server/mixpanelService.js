@@ -11,9 +11,10 @@ const trackCall = (callToPhoneNumber, callUser, callTime, callLeadType) => {
         console.error("Invalid phone number, cannot track call.");
         return;
     }
+
     console.log("Sending to Mixpanel - Track Call:", { callToPhoneNumber, callUser, callTime, callLeadType });
     mixpanel.people.set(callToPhoneNumber, {
-        $last_seen: new Date(callTime),
+        "Call Time": new Date(callTime),  // Use the custom property name
         $last_call_initiator: callUser,
         $call_type: callLeadType,
     }, function (err, res) {
@@ -24,6 +25,7 @@ const trackCall = (callToPhoneNumber, callUser, callTime, callLeadType) => {
         }
     });
 };
+
 
 const updateCallResult = (callToPhoneNumber, callResult) => {
     console.log("Sending to Mixpanel - Update Call Result:", { callToPhoneNumber, callResult });
